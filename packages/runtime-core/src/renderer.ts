@@ -361,7 +361,7 @@ export function createRenderer(renderOptions) {
     // 组件更新的时候 需要更新插槽
     Object.assign(instance.slots, next.children);
   };
-  function setupRenderEffect(instance, container, anchor, parentComponent) {
+  function setupRenderEffect(instance, container, anchor) {
     const componentUpdateFn = () => {
       // 我们要在这里区分：是第一次还是之后的
       const { bm, m } = instance;
@@ -391,7 +391,7 @@ export function createRenderer(renderOptions) {
 
         // 基于状态的组件组件更新
         const subTree = renderComponent(instance);
-        patch(instance.subTree, subTree, container, anchor, parentComponent);
+        patch(instance.subTree, subTree, container, anchor, instance);
         instance.subTree = subTree;
 
         if (u) {
@@ -430,7 +430,7 @@ export function createRenderer(renderOptions) {
     // 2. 给实例的属性赋值
     setupComponent(instance);
     // 3. 创建一个effect
-    setupRenderEffect(instance, container, anchor, parentComponent);
+    setupRenderEffect(instance, container, anchor);
   };
   const hasPropsChange = (prevProps, nextProps) => {
     let nKeys = Object.keys(prevProps);
