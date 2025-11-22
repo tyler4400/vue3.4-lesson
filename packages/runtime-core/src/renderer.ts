@@ -1,4 +1,4 @@
-import { isRef, ReactiveEffect } from '@vue/reactivity/src';
+import { isRef, ReactiveEffect } from '@vue/reactivity';
 import { PatchFlags, ShapeFlags } from '@vue/shared';
 import { Fragment, isSameVnode, Text, createVnode } from './createVnode';
 import { queueJob } from './scheduler';
@@ -483,7 +483,6 @@ export function createRenderer(renderOptions) {
   const processComponent = (n1, n2, container, anchor, parentComponent) => {
     if (n1 === null) {
       if (n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE) {
-        debugger;
         // 需要走keepalive中的激活方法
         parentComponent.ctx.active(n2, container, anchor);
       } else {
@@ -563,8 +562,7 @@ export function createRenderer(renderOptions) {
     const performRemove = () => hostRemove(vnode.el);
     if (shapeFlag & ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE) {
       // 需要走keep走失活逻辑
-      // parentComponent.ctx.deactivate(vnode);
-      console.log('并非卸载');
+      parentComponent.ctx.deactivate(vnode);
     } else if (vnode.type === Fragment) {
       unmountChildren(vnode.children, parentComponent);
     } else if (shapeFlag & ShapeFlags.COMPONENT) {
